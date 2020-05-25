@@ -8,13 +8,11 @@ public with sharing class OrderTriggerHandler {
 		for (Order order : orders) {
 			if (String.isNotBlank(order.AccountId)) {
 				accountIdsWithOrderDeleted.add(order.AccountId);
-				System.debug('Ajouté à liser accountIdsWithOrderDeleted : ' + order.AccountId);
 			}
 		}
 		// Then query accounts and query all orders of each account to verify the ones withtout any order after the delete
 		if (!accountIdsWithOrderDeleted.isEmpty()) {
 			List<Account> accountsWithOrderDeleted = [SELECT Id, Active__c FROM Account WHERE Id IN :accountIdsWithOrderDeleted];
-			System.debug('Taille accountsWithOrderDeleted : ' + accountsWithOrderDeleted.size());
 			List<Order> accountsOrders = [SELECT Id, AccountId FROM Order WHERE AccountId IN :accountIdsWithOrderDeleted];
 
 			if (!accountsOrders.isEmpty()) {
