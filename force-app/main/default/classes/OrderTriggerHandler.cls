@@ -1,5 +1,14 @@
 public with sharing class OrderTriggerHandler {
 	
+	/**
+	* Returns nothing
+	*
+	* The desactivateAccountIfNoOrdersLeft method desactivates accounts from a list of orders
+	* If the accounts from the list of orders have no order remaining, Active__c field is set to false, nothing else
+	*
+	* @param		orders
+	* @return		void
+	*/
 	public static void desactivateAccountIfNoOrdersLeft(List<Order> orders) {
 		List<Account> accountsToDesactivate = new List<Account>();
 		Set<Id> accountIdsWithOrderDeleted = new Set<Id>();
