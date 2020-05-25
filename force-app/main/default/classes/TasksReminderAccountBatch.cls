@@ -1,33 +1,31 @@
 global with sharing class TasksReminderAccountBatch implements Database.Batchable<sObject> {
-	global String query;
-
-	// Constructor with initialization of the query to get first Account list filtered
-	global TasksReminderAccountBatch(String query) {
-		this.query = query;
+	global TasksReminderAccountBatch() {
 	}
 
 	global Database.QueryLocator start(Database.BatchableContext info) {
-		// Query passed as paramater of the constructor is used
-		return Database.getQueryLocator(this.query);
+		// Query only accounts with no orders (semi join inner selects not allowed with tasks, filter is applied in execute method)
+		String query = 'SELECT Id FROM Account WHERE Id NOT IN (SELECT AccountId FROM Order)';
+		// String query = 'SELECT Id FROM Account WHERE Id=\'0015I000005qilqQAA\'';
+		return Database.getQueryLocator(query);
 	}
 
 	global void execute(Database.BatchableContext info, List<Account> scope) {
-		List<Task> reminderTasksList = [SELECT Id, WhoId FROM Task WHERE Subject = 'Call'];
+		List<Task> reminderTasksList = [SELECT Id, WhatId FROM Task WHERE Subject = 'Call'];
 		List<Task> reminderTasksListToCreate = new List<Task>();
 		Set<Id> accountsIdHavingReminderTask = new Set<Id>();
 		// Initialization of a Set of Account Ids having reminder Tasks
 		for (Task reminderTask : reminderTasksList) {
-			accountsIdHavingReminderTask.add(reminderTask.WhoId);
+			accountsIdHavingReminderTask.add(reminderTask.WhatId);
 		}
 		// Next populate reminderTasksListToCreate with Tasks to create for accounts having no reminder task
 		for (Account accountToCheck : scope) {
 			if (!accountsIdHavingReminderTask.contains(accountToCheck.Id)) {
-				Task reminderTaskToCreate = new Task(	WhoId = accountToCheck.Id, 
+				Task reminderTaskToCreate = new Task(	WhatId = accountToCheck.Id, 
 														Subject = 'Call', 
 														Status = 'Not Started', 
 														Priority = 'Normal', 
 														IsReminderSet = true,
-														ReminderDateTime = System.now() + 5
+														ReminderDateTime = DateTime.valueOfGMT(String.valueOf(DateTime.now())) + 5
 													);
 				reminderTasksListToCreate.add(reminderTaskToCreate);
 			}
