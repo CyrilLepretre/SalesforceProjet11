@@ -5,7 +5,7 @@
 *
 */
 
-global with sharing class TasksReminderAccountScheduler {
+global with sharing class TasksReminderAccountScheduler implements Schedulable {
 
 	global void execute(SchedulableContext sc) {
 		TasksReminderAccountBatch batch = new TasksReminderAccountBatch();
