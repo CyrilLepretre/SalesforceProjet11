@@ -2,7 +2,7 @@ global with sharing class TasksReminderAccountScheduler {
 
 	global void execute(SchedulableContext sc) {
 		TasksReminderAccountBatch batch = new TasksReminderAccountBatch();
-		// Limit batch size to 200 for governor limits
+		// Limit batch size to 200, could be updated in the future depending on monitoring results
 		Database.executeBatch(batch, 200);
 	}
 }

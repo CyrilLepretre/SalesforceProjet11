@@ -5,7 +5,6 @@ global with sharing class TasksReminderAccountBatch implements Database.Batchabl
 	global Database.QueryLocator start(Database.BatchableContext info) {
 		// Query only accounts with no orders (semi join inner selects not allowed with tasks, filter is applied in execute method)
 		String query = 'SELECT Id FROM Account WHERE Id NOT IN (SELECT AccountId FROM Order)';
-		// String query = 'SELECT Id FROM Account WHERE Id=\'0015I000005qilqQAA\'';
 		return Database.getQueryLocator(query);
 	}
 
