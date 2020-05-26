@@ -1,3 +1,10 @@
+/**
+* @author:		 Cyril Lepretre
+* @date:		 25/05/2020
+* @description:	 Scheduler for the batch which creates reminder tasks
+*
+*/
+
 global with sharing class TasksReminderAccountScheduler {
 
 	global void execute(SchedulableContext sc) {

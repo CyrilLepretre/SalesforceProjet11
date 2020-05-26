@@ -1,3 +1,10 @@
+/**
+* @author:		 Cyril Lepretre
+* @date:		 25/05/2020
+* @description:	 Handler of the trigger on order, includes all the business logic
+*
+*/
+
 public with sharing class OrderTriggerHandler {
 	
 	/**

@@ -1,3 +1,10 @@
+/**
+* @author:		 Cyril Lepretre
+* @date:		 25/05/2020
+* @description:	 Batch that creates reminder tasks depending on business rules (no order and reminder on the account, the create a reminder task)
+*
+*/
+
 global with sharing class TasksReminderAccountBatch implements Database.Batchable<sObject> {
 	global TasksReminderAccountBatch() {
 	}
